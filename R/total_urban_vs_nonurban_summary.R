@@ -20,10 +20,8 @@ dat <- readRDS("Data/dat_for_urban_level_analysis.RDS") %>%
   dplyr::filter(complete.cases(Ecoregion)) %>%
   dplyr::filter(Ecoregion != "Montane Grasslands & Shrublands")
 
-status <- read_csv("Data/Australian_Frog_List_Plus_ConsStat.csv") %>%
+family <- read_csv("Data/Australian_Frog_List_Plus_ConsStat_Family_April_2020.csv") %>%
   dplyr::rename(IUCN=`IUCN Status`)
-
-family <- read_csv("Data/Australian_Frog_List_Plus_ConsStat_Family.csv")
 
 # summary stuff
 length(unique(dat$species))
@@ -91,7 +89,7 @@ shared_species <- dat %>%
 
 # threatened species found in urban areas
 dat %>%
-  left_join(., status) %>%
+  left_join(., family) %>%
   group_by(urban, IUCN) %>%
   summarize(species_richness=length(unique(species)),
             number_records=length(unique(id)))
@@ -152,7 +150,7 @@ shared_species <- dat %>%
 
 # threatened species found in urban areas
 dat %>%
-  left_join(., status) %>%
+  left_join(., family) %>%
   group_by(urban, IUCN) %>%
   summarize(species_richness=length(unique(species)),
             number_records=length(unique(id)))
@@ -160,7 +158,7 @@ dat %>%
 # get a few example species that are found only in urban and
 # non-urban areas
 ex_sp <- dat %>%
-  left_join(., status) %>%
+  left_join(., family) %>%
   group_by(urban, IUCN, species) %>%
   summarize(number_records=length(unique(id)))
 
